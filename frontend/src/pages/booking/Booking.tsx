@@ -1,6 +1,4 @@
-import { FC } from 'react';
-
-const Booking: FC = () => {
+const Booking = () => {
   return (
     <div>
       <h1>Booking page</h1>

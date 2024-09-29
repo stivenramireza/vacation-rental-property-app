@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import PropertyList from '../../components/property/list/PropertyList';
 
-const Home: FC = () => {
+const Home = () => {
   return (
-    <div>
-      <h1>Home page</h1>
+    <div className="container">
+      <PropertyList />
     </div>
   );
 };
