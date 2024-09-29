@@ -10,14 +10,17 @@ async function bootstrap() {
   const logger = new Logger('bootstrap');
 
   const config = app.get(ConfigService);
-  const port = config.get('PORT');
-  const environment = config.get('ENV');
-  const apiVersion = config.get('API_VERSION');
+  const [port, environment, apiVersion, originCorsUrl] = [
+    config.get('PORT'),
+    config.get('ENV'),
+    config.get('API_VERSION'),
+    config.get('ORIGIN_CORS_URL')
+  ];
 
   app.setGlobalPrefix(`/api/${apiVersion}`);
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: originCorsUrl,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true
   });

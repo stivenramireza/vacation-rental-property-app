@@ -11,6 +11,7 @@ export const ConfigSchema = J.object({
   API_VERSION: J.string()
     .valid(...Object.values(ApiVersion))
     .required(),
+  ORIGIN_CORS_URL: J.string().required(),
   DB_HOST: J.string().required(),
   DB_PORT: J.number().required(),
   DB_NAME: J.string().required(),
@@ -23,7 +24,8 @@ export default (): SecretsConfig => ({
     port: +process.env.PORT,
     environment: process.env.ENV as Environment,
     host: process.env.HOST,
-    apiVersion: process.env.API_VERSION as ApiVersion
+    apiVersion: process.env.API_VERSION as ApiVersion,
+    originCorsUrl: process.env.ORIGIN_CORS_URL
   },
   database: {
     host: process.env.DB_HOST,

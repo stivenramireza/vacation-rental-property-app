@@ -13,6 +13,7 @@ export interface AppConfig {
   environment: Environment;
   host: string;
   apiVersion: ApiVersion;
+  originCorsUrl: string;
 }
 
 export interface DatabaseConfig {
