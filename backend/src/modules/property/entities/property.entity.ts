@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm';
 import { Booking } from '../../booking/entities/booking.entity';
+import { PropertyStatus } from '../interfaces/property.interface';
 
 @Entity({ name: 'property' })
 export class Property {
@@ -26,6 +27,13 @@ export class Property {
 
   @Column({ type: 'timestamp', name: 'availability_end' })
   availabilityEnd: Date;
+
+  @Column({
+    type: 'enum',
+    enum: PropertyStatus,
+    default: PropertyStatus.ACTIVE
+  })
+  status: PropertyStatus;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

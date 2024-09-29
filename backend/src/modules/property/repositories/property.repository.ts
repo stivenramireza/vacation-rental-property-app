@@ -8,6 +8,11 @@ import { CreatePropertyDto } from '../dto/create-property.dto';
 import { PaginationService } from '../../general/services/pagination.service';
 import { PaginationDto } from '../../general/dto/pagination.dto';
 import { Pagination } from '../../general/interfaces/pagination.interface';
+import {
+  PropertyFindParams,
+  PropertyStatus
+} from '../interfaces/property.interface';
+import { UpdatePropertyDto } from '../dto/update-property.dto';
 
 @Injectable()
 export class PropertyRepository {
@@ -25,7 +30,9 @@ export class PropertyRepository {
   async find(paginationDto: PaginationDto): Promise<Pagination<Property>> {
     const { page, limit } = paginationDto;
 
-    const query = this.repository.createQueryBuilder('p');
+    const query = this.repository
+      .createQueryBuilder('p')
+      .where('p.status = :status', { status: PropertyStatus.ACTIVE });
 
     return await this.paginationService.getPage({
       query,
@@ -33,6 +40,37 @@ export class PropertyRepository {
       orderingField: 'createdAt',
       page,
       limit
+    });
+  }
+
+  async findById(propertyId: string): Promise<Property> {
+    return await this.repository.findOne({
+      where: { id: propertyId, status: PropertyStatus.ACTIVE }
+    });
+  }
+
+  async findOne(params: PropertyFindParams): Promise<Property> {
+    const { name, location } = params;
+
+    return await this.repository.findOne({
+      where: {
+        name,
+        location,
+        status: PropertyStatus.ACTIVE
+      }
+    });
+  }
+
+  async update(
+    propertyId: string,
+    updatePropertyDto: UpdatePropertyDto
+  ): Promise<void> {
+    await this.repository.update(propertyId, updatePropertyDto);
+  }
+
+  async delete(propertyId: string): Promise<void> {
+    await this.repository.update(propertyId, {
+      status: PropertyStatus.DELETED
     });
   }
 }

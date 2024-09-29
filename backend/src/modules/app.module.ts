@@ -4,8 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import config, { ConfigSchema } from '@/config/config';
 import { TypeOrmConfigService } from '@/config';
-import { PropertyModule, BookingModule } from '@/modules';
-import { GeneralModule } from './general/general.module';
+import { GeneralModule, PropertyModule, BookingModule } from '@/modules';
 
 @Module({
   controllers: [],

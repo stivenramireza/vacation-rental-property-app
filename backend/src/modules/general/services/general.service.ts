@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
-import { HealthCheckStatus } from '../interfaces/general.interface';
+import {
+  HealthCheckStatus,
+  HealthCheckStatusResponse
+} from '../interfaces/general.interface';
 
 @Injectable()
 export class GeneralService {
-  getHealthCheckStatus(): { status: HealthCheckStatus } {
+  getHealthCheckStatus(): HealthCheckStatusResponse {
     return { status: HealthCheckStatus.OK };
   }
 }

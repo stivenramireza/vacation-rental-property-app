@@ -11,6 +11,6 @@ import { GeneralModule } from '../general/general.module';
   controllers: [PropertyController],
   providers: [PropertyService, PropertyRepository],
   imports: [TypeOrmModule.forFeature([Property]), GeneralModule],
-  exports: []
+  exports: [PropertyService]
 })
 export class PropertyModule {}

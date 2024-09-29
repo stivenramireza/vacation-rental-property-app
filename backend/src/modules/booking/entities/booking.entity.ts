@@ -36,11 +36,11 @@ export class Booking {
 
   get totalPrice(): number {
     const [checkInDate, checkOutDate] = [
-      DateTime.fromJSDate(this.checkIn),
-      DateTime.fromJSDate(this.checkOut)
+      DateTime.fromJSDate(new Date(this.checkIn)),
+      DateTime.fromJSDate(new Date(this.checkOut))
     ];
 
-    const days = Math.floor(checkOutDate.diff(checkInDate).days);
+    const days = Math.floor(checkOutDate.diff(checkInDate, 'days').days);
     const total = days * this.property.pricePerNight;
 
     return Number(total.toFixed(2));

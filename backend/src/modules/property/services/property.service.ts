@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 
 import { CreatePropertyDto } from '../dto/create-property.dto';
 import { UpdatePropertyDto } from '../dto/update-property.dto';
@@ -11,7 +15,10 @@ import { PaginationDto } from '../../general/dto/pagination.dto';
 export class PropertyService {
   constructor(private readonly propertyRepository: PropertyRepository) {}
 
-  async create(createPropertyDto: CreatePropertyDto) {
+  async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
+    const { name, location } = createPropertyDto;
+    await this.validatePropertyExistence(name, location);
+
     try {
       return await this.propertyRepository.save(createPropertyDto);
     } catch (error) {
@@ -23,11 +30,52 @@ export class PropertyService {
     return await this.propertyRepository.find(paginationDto);
   }
 
-  async update(id: string, updatePropertyDto: UpdatePropertyDto) {
-    return `This action updates a #${id} property`;
+  async findById(propertyId: string): Promise<Property> {
+    const property = await this.propertyRepository.findById(propertyId);
+    if (!property) throw new NotFoundException('Property not found');
+
+    return property;
   }
 
-  async remove(id: string) {
-    return `This action removes a #${id} property`;
+  async update(
+    propertyId: string,
+    updatePropertyDto: UpdatePropertyDto
+  ): Promise<Property> {
+    const { name, location } = updatePropertyDto;
+
+    if (name && location) {
+      await this.validatePropertyExistence(name, location);
+    }
+
+    try {
+      await this.propertyRepository.update(propertyId, updatePropertyDto);
+    } catch (error) {
+      throw new ConflictException('The property could not be updated');
+    }
+
+    return await this.findById(propertyId);
+  }
+
+  async remove(propertyId: string) {
+    const property = await this.findById(propertyId);
+
+    try {
+      await this.propertyRepository.delete(propertyId);
+    } catch (error) {
+      throw new ConflictException('The property could not be deleted');
+    }
+
+    return property;
+  }
+
+  async validatePropertyExistence(
+    name: string,
+    location: string
+  ): Promise<void> {
+    const property = await this.propertyRepository.findOne({ name, location });
+    if (property)
+      throw new ConflictException(
+        'A property already exists with those features'
+      );
   }
 }
