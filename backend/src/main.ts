@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './modules/app.module';
 
@@ -25,6 +26,14 @@ async function bootstrap() {
       }
     })
   );
+
+  const documentConfig = new DocumentBuilder()
+    .setTitle('Vacation Rental Property API')
+    .setDescription('Vacation Rental Property API endpoints')
+    .setVersion('0.1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, documentConfig);
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(port);
   logger.log(`App running at port ${port} in ${environment} mode`);

@@ -8,12 +8,14 @@ import {
   Query,
   Put
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreatePropertyDto } from '../dto/create-property.dto';
 import { UpdatePropertyDto } from '../dto/update-property.dto';
 import { PropertyService } from '../services/property.service';
 import { PaginationDto } from '../../general/dto/pagination.dto';
 
+@ApiTags('Properties')
 @Controller('properties')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}

@@ -1,7 +1,7 @@
 services:
   vacation-rental-property-api:
     container_name: vacation-rental-property-api
-    image: mygroupcompany/backend:0.1.0
+    image: stivenramireza/vacation-rental-property-api:0.1.0
     ports:
       - ${PORT}:${PORT}
     networks:
