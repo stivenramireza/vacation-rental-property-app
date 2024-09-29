@@ -1,10 +1,6 @@
 import * as J from 'joi';
 
-import {
-  ApiVersion,
-  Environment,
-  SecretsConfig
-} from '@/config/interfaces/config.interface';
+import { ApiVersion, Environment, SecretsConfig } from '@/config/interfaces/config.interface';
 
 export const ConfigSchema = J.object({
   PORT: J.number().required(),

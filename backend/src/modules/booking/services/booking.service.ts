@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { DateTime } from 'luxon';
 
@@ -16,15 +12,14 @@ import { Property } from '../../property/entities/property.entity';
 
 @Injectable()
 export class BookingService {
+  private readonly logger = new Logger(BookingService.name);
+
   constructor(
     private readonly bookingRepository: BookingRepository,
     private readonly propertyService: PropertyService
   ) {}
 
-  async create(
-    propertyId: string,
-    createBookingDto: CreateBookingDto
-  ): Promise<Booking> {
+  async create(propertyId: string, createBookingDto: CreateBookingDto): Promise<Booking> {
     const property = await this.propertyService.findById(propertyId);
 
     const { checkIn, checkOut } = createBookingDto;
@@ -35,16 +30,14 @@ export class BookingService {
       const newBooking = { ...createBookingDto, propertyId };
       createdBooking = await this.bookingRepository.save(newBooking);
     } catch (error) {
+      this.logger.error(error?.message || error);
       throw new ConflictException('The property could not be created');
     }
 
     return await this.findById(createdBooking.id);
   }
 
-  async findAll(
-    propertyId: string,
-    paginationDto: PaginationDto
-  ): Promise<Pagination<Booking>> {
+  async findAll(propertyId: string, paginationDto: PaginationDto): Promise<Pagination<Booking>> {
     return await this.bookingRepository.find(propertyId, paginationDto);
   }
 
@@ -55,20 +48,11 @@ export class BookingService {
     return booking;
   }
 
-  async validateBookingRules(
-    property: Property,
-    checkIn: string,
-    checkOut: string
-  ) {
+  async validateBookingRules(property: Property, checkIn: string, checkOut: string) {
     // Validate booking dates
-    const [checkInDate, checkOutDate] = [
-      DateTime.fromISO(checkIn),
-      DateTime.fromISO(checkOut)
-    ];
+    const [checkInDate, checkOutDate] = [DateTime.fromISO(checkIn), DateTime.fromISO(checkOut)];
     if (checkInDate > checkOutDate) {
-      throw new ConflictException(
-        'Checkout date must be greater than checkin date'
-      );
+      throw new ConflictException('Checkout date must be greater than checkin date');
     }
 
     // Validate booking availability
@@ -77,36 +61,23 @@ export class BookingService {
       DateTime.fromJSDate(property.availabilityEnd)
     ];
     const isAvailableBooking =
-      checkInDate >= availabilityStartDate &&
-      checkOutDate <= availabilityEndDate;
+      checkInDate >= availabilityStartDate && checkOutDate <= availabilityEndDate;
     if (!isAvailableBooking) {
-      throw new ConflictException(
-        'Property is not available for bookings between those dates'
-      );
+      throw new ConflictException('Property is not available for bookings between those dates');
     }
 
     // Validate booking existence
-    await this.validateBookingExistence(
-      property,
-      checkInDate.toJSDate(),
-      checkOutDate.toJSDate()
-    );
+    await this.validateBookingExistence(property, checkInDate.toJSDate(), checkOutDate.toJSDate());
   }
 
-  async validateBookingExistence(
-    property: Property,
-    checkIn: Date,
-    checkOut: Date
-  ): Promise<void> {
+  async validateBookingExistence(property: Property, checkIn: Date, checkOut: Date): Promise<void> {
     const booking = await this.bookingRepository.findOne({
       propertyId: property.id,
       checkIn,
       checkOut
     });
     if (booking) {
-      throw new ConflictException(
-        'A booking already exists for that property and dates'
-      );
+      throw new ConflictException('A booking already exists for that property and dates');
     }
   }
 }

@@ -12,19 +12,13 @@ export class BookingController {
 
   @ApiOperation({ summary: 'Create a new booking for a property' })
   @Post('book')
-  create(
-    @Param('id') propertyId: string,
-    @Body() createBookingDto: CreateBookingDto
-  ) {
+  create(@Param('id') propertyId: string, @Body() createBookingDto: CreateBookingDto) {
     return this.bookingService.create(propertyId, createBookingDto);
   }
 
   @ApiOperation({ summary: 'List all bookings for a property' })
   @Get('bookings')
-  findAll(
-    @Param('id') propertyId: string,
-    @Query() paginationDto: PaginationDto
-  ) {
+  findAll(@Param('id') propertyId: string, @Query() paginationDto: PaginationDto) {
     return this.bookingService.findAll(propertyId, paginationDto);
   }
 }

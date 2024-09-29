@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 
 import { CreatePropertyDto } from '../dto/create-property.dto';
 import { UpdatePropertyDto } from '../dto/update-property.dto';
@@ -13,6 +9,8 @@ import { PaginationDto } from '../../general/dto/pagination.dto';
 
 @Injectable()
 export class PropertyService {
+  private readonly logger = new Logger(PropertyService.name);
+
   constructor(private readonly propertyRepository: PropertyRepository) {}
 
   async create(createPropertyDto: CreatePropertyDto): Promise<Property> {
@@ -22,6 +20,7 @@ export class PropertyService {
     try {
       return await this.propertyRepository.save(createPropertyDto);
     } catch (error) {
+      this.logger.error(error?.message || error);
       throw new ConflictException('The property could not be created');
     }
   }
@@ -37,10 +36,7 @@ export class PropertyService {
     return property;
   }
 
-  async update(
-    propertyId: string,
-    updatePropertyDto: UpdatePropertyDto
-  ): Promise<Property> {
+  async update(propertyId: string, updatePropertyDto: UpdatePropertyDto): Promise<Property> {
     const { name, location } = updatePropertyDto;
 
     if (name && location) {
@@ -50,6 +46,7 @@ export class PropertyService {
     try {
       await this.propertyRepository.update(propertyId, updatePropertyDto);
     } catch (error) {
+      this.logger.error(error?.message || error);
       throw new ConflictException('The property could not be updated');
     }
 
@@ -62,20 +59,15 @@ export class PropertyService {
     try {
       await this.propertyRepository.delete(propertyId);
     } catch (error) {
+      this.logger.error(error?.message || error);
       throw new ConflictException('The property could not be deleted');
     }
 
     return property;
   }
 
-  async validatePropertyExistence(
-    name: string,
-    location: string
-  ): Promise<void> {
+  async validatePropertyExistence(name: string, location: string): Promise<void> {
     const property = await this.propertyRepository.findOne({ name, location });
-    if (property)
-      throw new ConflictException(
-        'A property already exists with those features'
-      );
+    if (property) throw new ConflictException('A property already exists with those features');
   }
 }

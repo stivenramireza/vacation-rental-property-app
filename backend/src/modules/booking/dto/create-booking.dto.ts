@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { IsDateString, IsString, MinLength, Validate } from 'class-validator';
-import { DateTime } from 'luxon';
+import { IsDateString, IsString, MinLength } from 'class-validator';
 
 export class CreateBookingDto {
   @ApiProperty({

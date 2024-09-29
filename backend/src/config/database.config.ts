@@ -2,11 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
-import {
-  AppConfig,
-  DatabaseConfig,
-  Environment
-} from './interfaces/config.interface';
+import { AppConfig, DatabaseConfig, Environment } from './interfaces/config.interface';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -21,9 +17,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       this.configService.get<DatabaseConfig>('database');
     const { environment } = this.configService.get<AppConfig>('app');
 
-    const sslEnabled = [Environment.PRODUCTION, Environment.STAGING].includes(
-      environment
-    );
+    const sslEnabled = [Environment.PRODUCTION, Environment.STAGING].includes(environment);
 
     return {
       type: 'postgres',

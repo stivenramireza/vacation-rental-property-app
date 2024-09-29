@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Query,
-  Put
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Query, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CreatePropertyDto } from '../dto/create-property.dto';
@@ -24,26 +15,19 @@ export class PropertyController {
 
   @ApiOperation({ summary: 'Create a new property' })
   @Post()
-  async create(
-    @Body() createPropertyDto: CreatePropertyDto
-  ): Promise<Property> {
+  async create(@Body() createPropertyDto: CreatePropertyDto): Promise<Property> {
     return this.propertyService.create(createPropertyDto);
   }
 
   @ApiOperation({ summary: 'List all properties' })
   @Get()
-  findAll(
-    @Query() paginationDto: PaginationDto
-  ): Promise<Pagination<Property>> {
+  findAll(@Query() paginationDto: PaginationDto): Promise<Pagination<Property>> {
     return this.propertyService.findAll(paginationDto);
   }
 
   @ApiOperation({ summary: 'Update property details' })
   @Put(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updatePropertyDto: UpdatePropertyDto
-  ): Promise<Property> {
+  update(@Param('id') id: string, @Body() updatePropertyDto: UpdatePropertyDto): Promise<Property> {
     return this.propertyService.update(id, updatePropertyDto);
   }
 

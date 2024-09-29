@@ -8,10 +8,7 @@ import { CreatePropertyDto } from '../dto/create-property.dto';
 import { PaginationService } from '../../general/services/pagination.service';
 import { PaginationDto } from '../../general/dto/pagination.dto';
 import { Pagination } from '../../general/interfaces/pagination.interface';
-import {
-  PropertyFindParams,
-  PropertyStatus
-} from '../interfaces/property.interface';
+import { PropertyFindParams, PropertyStatus } from '../interfaces/property.interface';
 import { UpdatePropertyDto } from '../dto/update-property.dto';
 
 @Injectable()
@@ -61,10 +58,7 @@ export class PropertyRepository {
     });
   }
 
-  async update(
-    propertyId: string,
-    updatePropertyDto: UpdatePropertyDto
-  ): Promise<void> {
+  async update(propertyId: string, updatePropertyDto: UpdatePropertyDto): Promise<void> {
     await this.repository.update(propertyId, updatePropertyDto);
   }
 

@@ -23,10 +23,7 @@ export class BookingRepository {
     return await this.repository.save(newBooking);
   }
 
-  async find(
-    propertyId: string,
-    paginationDto: PaginationDto
-  ): Promise<Pagination<Booking>> {
+  async find(propertyId: string, paginationDto: PaginationDto): Promise<Pagination<Booking>> {
     const { page, limit } = paginationDto;
 
     const query = this.repository
