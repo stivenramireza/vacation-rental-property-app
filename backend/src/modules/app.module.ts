@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import config, { ConfigSchema } from '@/config/config';
 import { TypeOrmConfigService } from '@/config';
 import { PropertyModule, BookingModule } from '@/modules';
+import { GeneralModule } from './general/general.module';
 
 @Module({
   controllers: [],
@@ -16,6 +17,7 @@ import { PropertyModule, BookingModule } from '@/modules';
       validationSchema: ConfigSchema
     }),
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
+    GeneralModule,
     PropertyModule,
     BookingModule
   ],
