@@ -1,8 +1,16 @@
 {
     "folders": [
       {
-        "name": "Root",
+        "name": "root",
         "path": ".."
+      },
+      {
+        "name": "backend",
+        "path": "../backend"
+      },
+      {
+        "name": "frontend",
+        "path": "../frontend"
       }
     ],
     "extensions": {
@@ -30,9 +38,9 @@
       "eslint.validate": ["typescript"],
       "[typescript]": {
         "editor.codeActionsOnSave": {
-          "source.fixAll.eslint": true,
-          "editor.formatOnSave": true,
-          "source.organizeImports": false
+          "source.fixAll.eslint": "always",
+          "editor.formatOnSave": "always",
+          "source.organizeImports": "never"
         },
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode"
