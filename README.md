@@ -18,7 +18,7 @@ Now you have an environment to run both backend and frontend applications becaus
 
 #### Environment variables
 
-1. Clone the file `.env.template` and rename to `.env`.
+1. Clone the file `backend/.env.template` and rename to `backend/.env`.
 
 2. Fill the environment variables defined in the `.env` file.
 
@@ -77,11 +77,13 @@ Finally, if somethings fails and you need to revert the database changes, you ca
 $ docker exec -it vacation-rental-property-api npm run migration:revert
 ```
 
+**Note:** This previous command will only revert changes from the last migration. So, you need to revert more than one, you should execute it again until get the version you want.
+
 ### Frontend
 
 #### Environment variables
 
-1. Clone the file `.env.template` and rename to `.env`.
+1. Clone the file `frontend/.env.template` and rename to `frontend/.env`.
 
 2. Fill the environment variables defined in the `.env` file.
 
@@ -99,6 +101,28 @@ $ docker-compose -f frontend/docker-compose.yml up --build
 ```
 
 **Note:** As I mentioned before, the Docker image will be built with this command and 1 container will be up, the frontend application.
+
+## Debugging
+
+If you want to debug these applications, you could use **VSCode Workspace**, which is an interesting tool to configure the development environment.
+
+You need follow these steps to get the configured workspace for this project:
+
+1. Clone the file `.vscode/template.code-workspace` and rename to `.vscode/<YOUR_NICKNAME>.code-workspace`.
+
+    You can use whatever nickame. You should try not using sensitive words neither special characters.
+
+2. In the cloned file, replace the `eslint.runtime` configuration from `<REPLACE WITH nvm which 20>` to the specific binary route where **Node 20** was installed, e.g `/home/stivenramireza/.nvm/versions/node/v20.17.0/bin/node`.
+
+3. Click on "Open Workspace".
+
+3. Install the recommended workspace extensions. It is necessary to finish this setup.
+
+**Note:** We are running Docker containers, that's the reason why we need to attach our machine to exposed container ports which are different to the backend and frontend apps.
+
+For example, for backend you could use the port `9229`. In a similar situation, you could use the port `9230` for frontend side.
+
+When the debugger is executed for each app configuration, our machine will be attached to the `localhost` address in the `app` root directory of that container using an inspector protocol.
 
 ## Technologies stack
 
