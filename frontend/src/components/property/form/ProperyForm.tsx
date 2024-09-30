@@ -11,7 +11,7 @@ const PropertyForm = () => {
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Cozy Cabin"
+            placeholder="Seaside Retreat"
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -23,7 +23,7 @@ const PropertyForm = () => {
           <Form.Label>Location</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Miami, Florida, United States"
+            placeholder="Miami, FL"
             name="location"
             value={formData.location}
             onChange={handleChange}

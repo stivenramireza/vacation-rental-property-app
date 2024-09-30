@@ -13,7 +13,7 @@ const PropertyList = (): JSX.Element => {
       <InfiniteScroll<Property>
         renderItem={renderProperty}
         requestService={getProperties}
-        pageLimit={4}
+        pageLimit={6}
       />
       <ModalAlert
         showModal={showModal}

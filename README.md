@@ -51,13 +51,13 @@ After the application is running, you need to ensure their database tables are c
 
 Here you can find some important notes related to this topic:
 
-First of all, you need to run this command in a different terminal in order to execute the required database changes to keep the application running successfully.
+- First of all, you need to run this command in a different terminal in order to execute the required database changes to keep the application running successfully.
 
 ```bash
 $ docker exec -it vacation-rental-property-api npm run migration:run
 ```
 
-After that and if you continue developing a new feature and you need to change something related to the entities, you should execute this command in order to generate a new migration:
+- After that and if you continue developing a new feature and you need to change something related to the entities, you should execute this command in order to generate a new migration:
 
 ```bash
 $ docker exec -it vacation-rental-property-api npm run migration:generate ./app/src/migrations/<MIGRATION_NAME>
@@ -71,7 +71,7 @@ $ docker exec -it vacation-rental-property-api npm run migration:generate ./app/
 
 **Note:** If you want to apply those changes inmediately, you should execute the first command again.
 
-Finally, if somethings fails and you need to revert the database changes, you can run this command:
+- Finally, if somethings fails and you need to revert the database changes, you can run this command:
 
 ```bash
 $ docker exec -it vacation-rental-property-api npm run migration:revert
@@ -107,6 +107,14 @@ $ docker-compose -f frontend/docker-compose.yml up --build
 ```
 
 **Note:** As I mentioned before, the Docker image will be built with this command and 1 container will be up, the frontend application.
+
+#### Demo
+
+You can interact with the UI interface in this link: http://localhost:3000.
+
+https://github.com/user-attachments/assets/5f1b4af2-54f0-4456-adf7-fb5af08f705d
+
+https://github.com/user-attachments/assets/4277046d-cb93-4d3c-b37a-b80456ce91b3
 
 ## Debugging
 

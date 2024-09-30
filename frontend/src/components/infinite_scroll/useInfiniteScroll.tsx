@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { PaginationServiceResponse, ServiceRequest } from '../../utils/types/services';
 
@@ -6,16 +6,20 @@ const useInfiniteScroll = <T,>(params: {
   requestService: ServiceRequest<PaginationServiceResponse<T>>;
   pageLimit: number;
   id?: string;
-}): { data: T[]; loading: boolean } => {
+}): { data: T[]; loading: boolean; hasMore: boolean } => {
   const { requestService, pageLimit, id } = params || {};
 
   const [data, setData] = useState<T[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const initialFetchDone = useRef(false);
 
   useEffect(() => {
+    if (initialFetchDone.current) return;
+
     fetchMoreData();
+    initialFetchDone.current = true;
   }, []);
 
   useEffect(() => {
@@ -29,11 +33,10 @@ const useInfiniteScroll = <T,>(params: {
 
     try {
       const response = await requestService(page, pageLimit, id);
-      const totalData = response.data.total;
-      const newData = response.data.records;
+      const { total, records } = response.data;
 
-      setData((prevData) => [...prevData, ...newData]);
-      setHasMore(newData.length === totalData);
+      setData((prevData) => [...prevData, ...records]);
+      setHasMore(data.length !== total);
       setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error(error);
@@ -54,7 +57,8 @@ const useInfiniteScroll = <T,>(params: {
 
   return {
     data,
-    loading
+    loading,
+    hasMore
   };
 };
 

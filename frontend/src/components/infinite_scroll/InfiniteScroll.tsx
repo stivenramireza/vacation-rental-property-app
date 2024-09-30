@@ -17,7 +17,7 @@ const InfiniteScroll = <T,>({
   pageLimit,
   id
 }: InfiniteScrollProps<T>) => {
-  const { data, loading } = useInfiniteScroll<T>({
+  const { data, loading, hasMore } = useInfiniteScroll<T>({
     requestService,
     pageLimit,
     id
@@ -30,7 +30,12 @@ const InfiniteScroll = <T,>({
           <Col key={index}>{renderItem({ item })}</Col>
         ))}
       </Row>
-      {loading && <Spinner animation="border" />}
+      <div className="d-flex justify-content-center align-items-center">
+        {loading && <Spinner animation="border" />}
+      </div>
+      <div className="d-flex justify-content-center align-items-center mt-4">
+        {!data.length && !hasMore && <p>No more items to load</p>}
+      </div>
     </div>
   );
 };
