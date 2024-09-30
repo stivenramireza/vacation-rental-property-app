@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 
@@ -6,11 +6,7 @@ import { AppConfig, DatabaseConfig, Environment } from './interfaces/config.inte
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
-  private readonly logger: Logger;
-
-  constructor(private readonly configService: ConfigService) {
-    this.logger = new Logger('TypeOrmConfigService');
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
     const { host, port, name, username, password } =
@@ -27,7 +23,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username,
       password,
       autoLoadEntities: true,
-      synchronize: environment === Environment.DEVELOPMENT,
+      synchronize: false,
       ssl: sslEnabled,
       extra: {
         ssl: sslEnabled
