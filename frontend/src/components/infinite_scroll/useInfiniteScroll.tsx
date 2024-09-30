@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { PaginationServiceResponse, ServiceRequest } from '../../utils/types/services';
 
@@ -14,40 +14,43 @@ const useInfiniteScroll = <T,>(params: {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchMoreData = useCallback(async () => {
+  useEffect(() => {
+    fetchMoreData();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading, hasMore]);
+
+  const fetchMoreData = async (): Promise<void> => {
     if (loading || !hasMore) return;
     setLoading(true);
 
     try {
       const response = await requestService(page, pageLimit, id);
+      const totalData = response.data.total;
       const newData = response.data.records;
 
       setData((prevData) => [...prevData, ...newData]);
-      setHasMore(newData.length === pageLimit);
+      setHasMore(newData.length === totalData);
       setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, page, pageLimit, requestService, id]);
+  };
 
-  useEffect(() => {
-    fetchMoreData();
-  }, [fetchMoreData]);
-
-  const handleScroll = useCallback(() => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight && hasMore && !loading) {
+  const handleScroll = (): void => {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 2 &&
+      hasMore &&
+      !loading
+    ) {
       fetchMoreData();
     }
-  }, [hasMore, loading, fetchMoreData]);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [handleScroll]);
+  };
 
   return {
     data,

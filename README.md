@@ -79,6 +79,12 @@ $ docker exec -it vacation-rental-property-api npm run migration:revert
 
 **Note:** This previous command will only revert changes from the last migration. So, you need to revert more than one, you should execute it again until get the version you want.
 
+#### Demo
+
+You can interact with the API Swagger documentation in this link: http://localhost:8000/api/docs.
+
+https://github.com/user-attachments/assets/b1bedc9e-f989-44d2-b10f-e297db7fb69d
+
 ### Frontend
 
 #### Environment variables

@@ -23,7 +23,7 @@ export class BookingService {
     const property = await this.propertyService.findById(propertyId);
 
     const { checkIn, checkOut } = createBookingDto;
-    await this.validateBookingRules(property, checkIn, checkOut);
+    await this.validateBookingRules({ property, checkIn, checkOut });
 
     let createdBooking: Booking;
     try {
@@ -38,6 +38,7 @@ export class BookingService {
   }
 
   async findAll(propertyId: string, paginationDto: PaginationDto): Promise<Pagination<Booking>> {
+    await this.propertyService.findById(propertyId);
     return await this.bookingRepository.find(propertyId, paginationDto);
   }
 
@@ -48,14 +49,29 @@ export class BookingService {
     return booking;
   }
 
-  async validateBookingRules(property: Property, checkIn: string, checkOut: string) {
-    // Validate booking dates
+  async validateBookingRules(params: { property: Property; checkIn: string; checkOut: string }) {
+    const { property, checkIn, checkOut } = params;
+
     const [checkInDate, checkOutDate] = [DateTime.fromISO(checkIn), DateTime.fromISO(checkOut)];
+
+    this.validateBookingDates(checkInDate, checkOutDate);
+    this.validateBookingAvailability({ property, checkInDate, checkOutDate });
+    await this.validateBookingExistence(property, checkInDate.toJSDate(), checkOutDate.toJSDate());
+  }
+
+  validateBookingDates(checkInDate: DateTime, checkOutDate: DateTime): void {
     if (checkInDate > checkOutDate) {
       throw new ConflictException('Checkout date must be greater than checkin date');
     }
+  }
 
-    // Validate booking availability
+  validateBookingAvailability(params: {
+    property: Property;
+    checkInDate: DateTime;
+    checkOutDate: DateTime;
+  }) {
+    const { property, checkInDate, checkOutDate } = params;
+
     const [availabilityStartDate, availabilityEndDate] = [
       DateTime.fromJSDate(property.availabilityStart),
       DateTime.fromJSDate(property.availabilityEnd)
@@ -65,9 +81,6 @@ export class BookingService {
     if (!isAvailableBooking) {
       throw new ConflictException('Property is not available for bookings between those dates');
     }
-
-    // Validate booking existence
-    await this.validateBookingExistence(property, checkInDate.toJSDate(), checkOutDate.toJSDate());
   }
 
   async validateBookingExistence(property: Property, checkIn: Date, checkOut: Date): Promise<void> {
