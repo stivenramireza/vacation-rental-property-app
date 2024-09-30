@@ -83,7 +83,7 @@ $ docker exec -it vacation-rental-property-api npm run migration:revert
 
 You can interact with the API Swagger documentation in this link: http://localhost:8000/api/docs.
 
-
+https://github.com/user-attachments/assets/b1bedc9e-f989-44d2-b10f-e297db7fb69d
 
 ### Frontend
 
