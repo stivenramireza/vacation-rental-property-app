@@ -1,0 +1,89 @@
+{
+    "folders": [
+      {
+        "name": "root",
+        "path": ".."
+      },
+      {
+        "name": "backend",
+        "path": "../backend"
+      },
+      {
+        "name": "frontend",
+        "path": "../frontend"
+      }
+    ],
+    "extensions": {
+      "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker",
+        "aaron-bond.better-comments",
+        "usernamehw.errorlens",
+        "PKief.material-icon-theme",
+        "GitHub.vscode-pull-request-github"
+      ]
+    },
+    "settings": {
+      "typescript.preferences.importModuleSpecifier": "project-relative",
+      "typescript.preferences.quoteStyle": "single",
+      "search.exclude": {
+        "**/dist": true
+      },
+      "eslint.options": {
+        "extensions": [".ts"]
+      },
+      "eslint.runtime": "<REPLACE WITH nvm which 20>",
+      "eslint.workingDirectories": [""],
+      "eslint.validate": ["typescript"],
+      "[typescript]": {
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "always",
+          "editor.formatOnSave": "always",
+          "source.organizeImports": "never"
+        },
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+      },
+      "todohighlight.include": ["**/*.ts"],
+      "git.ignoreLimitWarning": true,
+      "files.watcherExclude": {
+        "**/.git/objects/**": false,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+      },
+      "typescript.tsdk": "node_modules/typescript/lib"
+    },
+    "tasks": {
+      "version": "2.0.0",
+      "inputs": [],
+      "tasks": []
+    },
+    "launch": {
+      "version": "0.2.0",
+      "inputs": [],
+      "configurations": [
+        {
+          "type": "node",
+          "request": "attach",
+          "name": "Workspace - Debug Vacation Rental Property API",
+          "port": 9229,
+          "address": "localhost",
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "/app",
+          "protocol": "inspector"
+        },
+        {
+          "type": "node",
+          "request": "attach",
+          "name": "Workspace - Debug Vacation Rental Property App",
+          "port": 9230,
+          "address": "localhost",
+          "localRoot": "${workspaceFolder}",
+          "remoteRoot": "/app",
+          "protocol": "inspector"
+        }
+      ]
+    }
+  }
+  
