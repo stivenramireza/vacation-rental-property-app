@@ -1,21 +1,39 @@
 services:
   vacation-rental-property-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: vacation-rental-property-api
-    image: stivenramireza/vacation-rental-property-api:0.1.0
     ports:
-      - ${PORT}:${PORT}
+      - ${PORT}:${PORT} # App port
+      - 9229:9229 # Debug port
     networks:
       - vacation-rental-property
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres-db
+    env_file:
+      - .env
     environment:
-      PORT: ${PORT}
-      ENV: ${ENV}
-      HOST: ${HOST}
-      API_VERSION: ${API_VERSION}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: postgres-db
+
+  postgres-db:
+    container_name: postgres-db
+    image: postgres:16.0
+    ports:
+      - ${DB_PORT}:5432
+    networks:
+      - vacation-rental-property
+    volumes:
+      - postgres-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
 networks:
   vacation-rental-property:
+
+volumes:
+  postgres-db-data:

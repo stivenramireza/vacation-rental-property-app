@@ -11,4 +11,4 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 RUN npm install
 
-CMD ["npm", "run", "start:debug"]
+CMD ["npm", "run", "start"]

@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, FormEvent, ChangeEvent, Dispatch, SetStateAction } from 'react';
 
-import { createProperty } from '../../../services/property';
-import { Alert, PropertyForm } from '../../../utils/types/components';
+import { Alert, BookingForm } from '../../../utils/types/components';
+import { createBooking } from '../../../services/booking';
 
-const usePropertyForm = (): {
-  formData: PropertyForm;
-  setFormData: Dispatch<SetStateAction<PropertyForm>>;
+const useBookingForm = (
+  propertyId: string
+): {
+  formData: BookingForm;
+  setFormData: Dispatch<SetStateAction<BookingForm>>;
   alert: Alert | null;
   setAlert: Dispatch<SetStateAction<Alert | null>>;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: FormEvent) => void;
 } => {
-  const [formData, setFormData] = useState<PropertyForm>({
-    name: '',
-    location: '',
-    pricePerNight: 100,
-    availabilityStart: '',
-    availabilityEnd: ''
+  const [formData, setFormData] = useState<BookingForm>({
+    customerName: '',
+    checkIn: '',
+    checkOut: ''
   });
 
   const [alert, setAlert] = useState<Alert | null>(null);
@@ -33,22 +33,20 @@ const usePropertyForm = (): {
     e.preventDefault();
 
     try {
-      await createProperty(formData);
+      await createBooking(propertyId, formData);
 
       setFormData({
-        name: '',
-        location: '',
-        pricePerNight: 100,
-        availabilityStart: '',
-        availabilityEnd: ''
+        customerName: '',
+        checkIn: '',
+        checkOut: ''
       });
 
-      setAlert({ type: 'success', message: 'Property was created successfully' });
+      setAlert({ type: 'success', message: 'Booking was created successfully' });
     } catch (error: any) {
       console.error(error);
 
-      let message = 'Error to create the property. Try again!';
-      if (error.response.status === 409) {
+      let message = 'Error to create the booking. Try again!';
+      if (error.response.status < 500) {
         message = error.response.data.message;
       }
 
@@ -66,4 +64,4 @@ const usePropertyForm = (): {
   };
 };
 
-export default usePropertyForm;
+export default useBookingForm;

@@ -11,3 +11,14 @@ export const formatDate = (date: string, format: string): string => {
   const dateObj = DateTime.fromISO(date);
   return dateObj.toFormat(format);
 };
+
+export const debounce = (func: (...args: unknown[]) => void, delay: number) => {
+  let timeout: NodeJS.Timeout;
+
+  return (...args: unknown[]) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};

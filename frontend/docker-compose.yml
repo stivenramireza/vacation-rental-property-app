@@ -1,0 +1,18 @@
+services:
+  vacation-rental-property-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vacation-rental-property-app
+    ports:
+      - ${REACT_APP_PORT}:${REACT_APP_PORT} # App port
+      - 9230:9230 # Debug port
+    networks:
+      - vacation-rental-property
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+
+networks:
+  vacation-rental-property:

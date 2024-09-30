@@ -8,11 +8,8 @@ const Header = () => {
         <Link to="/" className="text-white mx-3">
           Home
         </Link>
-        <Link to="/property" className="text-white mx-3">
-          Create a property
-        </Link>
-        <Link to="/booking" className="text-white mx-3">
-          Book a property
+        <Link to="/properties" className="text-white mx-3">
+          Add a new property
         </Link>
       </nav>
     </header>
