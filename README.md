@@ -2,11 +2,15 @@
 
 Vacation rental property management application that allows users to manage properties and bookings.
 
+## Architecture
+
+![Architecture](https://github.com/user-attachments/assets/8428dd31-9f4d-4515-966a-aca208e5cc56)
+
 ## Setup
 
 First of all, you need to install [Node.js 20.17.0](https://nodejs.org), [Docker](https://www.docker.com) and [Docker Compose](https://docs.docker.com/compose) as the main technologies to use in this project.
 
-Now you have an environment to run both backend and frontend applications because their dependencias are installed when the Docker containers are up.
+Now you have an environment to run both backend and frontend applications because their dependencies are installed when the Docker images are built.
 
 ## Applications
 
@@ -26,7 +30,7 @@ $ docker-compose -f backend/docker-compose.yml up --build
 
 #### Database
 
-Before the application is running, you need to ensure the database and their tables are created. For this purpose, we are going to use **migrations**. They are very important to have a versioning of the database changes.
+After the application is running, you need to ensure their database tables are created. For this purpose, we are going to use **migrations**. They are very important to have a versioning of the database changes.
 
 Here you can find some commands related to them:
 
@@ -48,7 +52,7 @@ $ docker exec -it vacation-rental-property-api npm run migration:run
 $ docker exec -it vacation-rental-property-api npm run migration:revert
 ```
 
-**Posdata:** It's really important to execute the second command first in order to have the recent changes of the database and the application runs correctly.
+**Note:** It's really important to execute the second command first in order to have the recent changes of the database and the application runs correctly.
 
 ### Frontend
 
