@@ -16,7 +16,7 @@ const BookingList = ({ propertyId }: BookingListProps): JSX.Element => {
       <InfiniteScroll<Booking>
         renderItem={renderBooking}
         requestService={getBookings}
-        pageLimit={4}
+        pageLimit={6}
         id={propertyId}
       />
     </>
